@@ -25,29 +25,34 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 #pragma once
 
-#include "display.h"
+#include <stdexcept>
 
 namespace picommons
 {
     inline namespace v1
     {
-        /**
-         * \brief LCD 16x02 implementation 4bit configuration
-         */
-        class LCD1602 final : public Display
+
+        using std::runtime_error;
+
+        class Pin
         {
-            void init(const vector<int> &) override;
+        protected:
+            uint8_t pin;
 
-            explicit LCD1602(const vector<int> &);
-            explicit LCD1602(const vector<int> &&pins) : LCD1602(pins) {}
+            inline Pin(uint8_t pin) noexcept : pin(pin) {}
 
-            //remove copy constructor
-            LCD1602(const LCD1602 &) = delete;
-            LCD1602 &operator=(const LCD1602 &) = delete;
-            LCD1602(Display &&) = delete;
-            LCD1602 &operator=(LCD1602 &&) = delete;
+            inline uint8_t getPin() const noexcept
+            {
+                return pin;
+            }
+        };
 
-            friend Display::Ptr Display::factory(const Display::Type &&type, const vector<int> &&);
+        class FromWiringPi final : public Pin
+        {
+        public:
+            using Pin::getPin;
+
+            FromWiringPi(uint8_t wiringPiPin);
         };
     }
 }

@@ -25,15 +25,15 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 #include "picommons/lcd1602.h"
 
-#include <wiringPi.h>
-#include <lcd.h>
-
 #include <stdexcept>
 using std::runtime_error;
 
-using picommons::LCD1602;
+#include <wiringPi.h>
+#include <lcd.h>
 
-LCD1602::LCD1602(const vector<int> &&pins) : Display(2, 16)
+using picommons::v1::LCD1602;
+
+LCD1602::LCD1602(const vector<int> &pins) : Display(2, 16)
 {
     init(pins);
 }
@@ -42,7 +42,7 @@ void LCD1602::init(const vector<int> &pins)
 {
     if (pins.empty() || pins.size() < 4)
     {
-        throw runtime_error("No set minimum pin id = 6");
+        throw runtime_error("No set minimum pins = 6");
     }
 
     handle = lcdInit(rows,

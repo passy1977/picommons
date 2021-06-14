@@ -25,29 +25,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 #pragma once
 
-#include "display.h"
+#include <cstdint>
 
 namespace picommons
 {
+
     inline namespace v1
     {
-        /**
-         * \brief LCD 16x02 implementation 4bit configuration
-         */
-        class LCD1602 final : public Display
-        {
-            void init(const vector<int> &) override;
-
-            explicit LCD1602(const vector<int> &);
-            explicit LCD1602(const vector<int> &&pins) : LCD1602(pins) {}
-
-            //remove copy constructor
-            LCD1602(const LCD1602 &) = delete;
-            LCD1602 &operator=(const LCD1602 &) = delete;
-            LCD1602(Display &&) = delete;
-            LCD1602 &operator=(LCD1602 &&) = delete;
-
-            friend Display::Ptr Display::factory(const Display::Type &&type, const vector<int> &&);
-        };
+        extern const uint8_t VERSION_MAJOR;
+        extern const uint8_t VERSION_MINOR;
+        extern const uint8_t VERSION_FIX;
     }
+
 }

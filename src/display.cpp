@@ -24,23 +24,24 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "picommons/display.h"
+#include "picommons/lcd1602.h"
 
 #include <lcd.h>
 
 #include <cstdarg>
 
-using picommons::Display;
+using picommons::v1::Display;
 
-void Display::print(const string &msg) noexcept
+void Display::print(const string &txt) noexcept
 {
-    lcdPuts(handle, msg.c_str());
+    lcdPuts(handle, txt.c_str());
 }
 
-void Display::printf(const string &message, ...) noexcept
+void Display::printf(const string &txt, ...) noexcept
 {
     va_list(args);
-    va_start(args, message);
-    lcdPrintf(handle, message.c_str(), args);
+    va_start(args, txt);
+    lcdPrintf(handle, txt.c_str(), args);
 }
 
 void Display::print(const uint8_t c) noexcept
@@ -63,26 +64,38 @@ void Display::position(int x, int y) noexcept
     lcdPosition(handle, x, y);
 }
 
-void Display::display(int state) noexcept
+void Display::display(bool state) noexcept
 {
     lcdDisplay(handle, state);
 }
 
-void Display::cursor(int state) noexcept
+void Display::cursor(bool state) noexcept
 {
     lcdCursor(handle, state);
 }
 
-void Display::cursorBlink(int state) noexcept
+void Display::cursorBlink(bool state) noexcept
 {
     lcdCursorBlink(handle, state);
 }
 
-void Display::lcdSendCommand(uint8_t command) noexcept
+void Display::sendCommand(uint8_t command) noexcept
 {
     lcdCursorBlink(handle, command);
 }
 void Display::charDef(int index, uint8_t data[8]) noexcept
 {
     lcdCharDef(handle, index, data);
+}
+
+Display::Ptr Display::factory(const Type &&type, const vector<int> &&pins)
+{
+    switch (type)
+    {
+    case Type::LCD1602:
+        return Display::Ptr(new LCD1602(pins));
+
+    default:
+        return Display::Ptr(nullptr);
+    }
 }

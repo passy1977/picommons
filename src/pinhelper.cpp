@@ -23,31 +23,70 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#pragma once
+#include "picommons/pinhelper.h"
 
-#include "display.h"
+using namespace picommons;
 
-namespace picommons
+FromWiringPi::FromWiringPi(uint8_t wiringPiPin) : Pin(0)
 {
-    inline namespace v1
+    switch (wiringPiPin)
     {
-        /**
-         * \brief LCD 16x02 implementation 4bit configuration
-         */
-        class LCD1602 final : public Display
-        {
-            void init(const vector<int> &) override;
+    case 0:
+        pin = 17;
+        break;
+    case 1:
+        pin = 18;
+        break;
+    case 2:
+        pin = 27;
+        break;
+    case 3:
+        pin = 22;
+        break;
+    case 4:
+        pin = 23;
+        break;
+    case 5:
+        pin = 24;
+        break;
+    case 6:
+        pin = 25;
+        break;
+    case 7:
+        pin = 4;
+        break;
+    case 8:
+        pin = 2;
+        break;
+    case 9:
+        pin = 3;
+        break;
+    case 10:
+        pin = 8;
+        break;
+    case 11:
+        pin = 7;
+    case 12:
+        pin = 10;
+        break;
+    case 13:
+        pin = 9;
+        break;
+    case 14:
+        pin = 11;
+        break;
+    case 15:
+        pin = 14;
+        break;
+    case 16:
+        pin = 15;
+        break;
+    case 17:
+        pin = 15;
+        break;
 
-            explicit LCD1602(const vector<int> &);
-            explicit LCD1602(const vector<int> &&pins) : LCD1602(pins) {}
-
-            //remove copy constructor
-            LCD1602(const LCD1602 &) = delete;
-            LCD1602 &operator=(const LCD1602 &) = delete;
-            LCD1602(Display &&) = delete;
-            LCD1602 &operator=(LCD1602 &&) = delete;
-
-            friend Display::Ptr Display::factory(const Display::Type &&type, const vector<int> &&);
-        };
+        //da finire
+    default:
+        throw runtime_error("No viable conversion");
     }
 }
