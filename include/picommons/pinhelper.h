@@ -47,9 +47,8 @@ namespace picommons
             }
         };
 
-        class FromWiringPi final : public Pin
+        struct FromWiringPi final : public Pin
         {
-        public:
             using Pin::getPin;
 
             FromWiringPi(uint8_t wiringPiPin);
