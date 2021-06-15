@@ -9,6 +9,7 @@ sudo apt update
 sudo apt install cmake git
 git clone https://github.com/WiringPi/WiringPi.git
 cd WiringPi/
+./build
 ```
 
 check if the configuration is ready
