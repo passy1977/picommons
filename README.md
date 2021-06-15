@@ -48,4 +48,5 @@ All the examples are combined with the relative Fritzing file containing the wir
 mkdir -p build
 cd build
 cmake ..
+make
 ```
