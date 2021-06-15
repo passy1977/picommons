@@ -9,6 +9,7 @@ sudo apt update
 sudo apt install cmake git
 git clone https://github.com/WiringPi/WiringPi.git
 cd WiringPi/
+./build
 ```
 
 check if the configuration is ready
@@ -17,7 +18,7 @@ check if the configuration is ready
 gpio -v
 ```
 
-In my case return the follof informations:
+In my case return the follov informations:
 
 ```
 gpio version: 2.60
@@ -47,4 +48,5 @@ All the examples are combined with the relative Fritzing file containing the wir
 mkdir -p build
 cd build
 cmake ..
+make
 ```
