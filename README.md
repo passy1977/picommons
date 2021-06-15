@@ -18,7 +18,7 @@ check if the configuration is ready
 gpio -v
 ```
 
-In my case return the follof informations:
+In my case return the follov informations:
 
 ```
 gpio version: 2.60
