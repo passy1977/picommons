@@ -27,51 +27,51 @@
  */
 
 #include <iostream>
+#include <iostream>
+#include <thread> // std::this_thread::sleep_for
+#include <chrono> // std::chrono::seconds
 using namespace std;
 
-#include <pigpio.h>
+#include <wiringPi.h>
 
-constexpr const int PIN_BLUE = 27;
-constexpr const int PIN_RED = 22;
+constexpr const int PIN_RED = 1;
+constexpr const int PIN_BLUE = 16;
 constexpr const uint16_t LED_TIME = 2000;
-
-auto callback = [](int gpio, int level, uint32_t tick)
-{ cout << (gpio == PIN_RED ? "Pin red " : "Pin blue ") << to_string(gpio) << " (" << to_string(level) << ")" << endl; };
 
 int main(int argc, char *argv[])
 {
 
-    if (gpioInitialise() < 0)
+    if (wiringPiSetup() == -1)
     {
         fprintf(stderr, "pigpio initialisation failed\n");
         return 1;
     }
 
-    /* Set GPIO modes */
+    /* Set WiringPi modes */
 
-    //set OUTPUT for pin 22
-    gpioSetMode(PIN_BLUE, PI_OUTPUT);
-    gpioSetAlertFunc(PIN_BLUE, callback);
+    //set OUTPUT for pin 1
+    pinMode(PIN_RED, OUTPUT);
 
-    //set OUTPUT for pin 27
-    gpioSetMode(PIN_RED, PI_OUTPUT);
-    gpioSetAlertFunc(PIN_RED, callback);
+    //set OUTPUT for pin 16
+    pinMode(PIN_BLUE, OUTPUT);
+
     for (;;)
     {
 
-        gpioWrite(PIN_BLUE, 1);
-        gpioWrite(PIN_RED, 0);
+        digitalWrite(PIN_BLUE, HIGH);
+        digitalWrite(PIN_RED, LOW);
+        cout << "BLUE" << endl;
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
 
-        gpioWrite(PIN_BLUE, 0);
-        gpioWrite(PIN_RED, 1);
+        digitalWrite(PIN_BLUE, LOW);
+        digitalWrite(PIN_RED, HIGH);
+        cout << "RED" << endl;
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
     }
 
     /* Stop DMA, release resources */
-    gpioTerminate();
 
     return 0;
 }

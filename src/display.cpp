@@ -26,6 +26,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 #include "picommons/display.h"
 #include "picommons/lcd1602.h"
 
+#include <algorithm>
+using namespace std;
+
 #include <lcd.h>
 
 #include <cstdarg>
@@ -98,4 +101,15 @@ Display::Ptr Display::factory(const Type &&type, const vector<int> &&pins)
     default:
         return Display::Ptr(nullptr);
     }
+}
+
+Display::Ptr Display::factory(const Type &&type, const vector<GPIO> &&pins)
+{
+    vector<int> computed;
+    computed.reserve(pins.size());
+    transform(pins.begin(), pins.end(),
+              std::back_inserter(computed),
+              [](auto &&pin)
+              { return pin.getPin(); });
+    return factory(move(type), move(pins));
 }

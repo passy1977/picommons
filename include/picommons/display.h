@@ -30,6 +30,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 #include <memory>
 
 #include "picommons/constants.h"
+#include "picommons/pinhelper.h"
 
 namespace picommons
 {
@@ -177,6 +178,16 @@ namespace picommons
              * \throws std::runtime_error if something goes wrong
              */
             static Ptr factory(const Type &&type, const vector<int> &&pins);
+
+            /**
+             * To get instance of display
+             * 
+             * \param[in]    type   Type of diplay
+             * \param[in]    pins   Input GPIO pins
+             * \return Instance request
+             * \throws std::runtime_error if something goes wrong
+             */
+            static Ptr factory(const Type &&type, const vector<GPIO> &&pins);
         };
 
     }

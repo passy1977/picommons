@@ -31,11 +31,11 @@
 #include <chrono> // std::chrono::seconds
 using namespace std;
 
-#include <pigpio.h>
+#include <wiringPi.h>
 
-constexpr const uint8_t PIN_BLUE = 27;
-constexpr const uint8_t PIN_RED = 22;
-constexpr const uint8_t PIN_BUTTON = 2;
+constexpr const int PIN_RED = 1;
+constexpr const int PIN_BLUE = 16;
+constexpr const int PIN_BUTTON = 0;
 constexpr const uint16_t LED_TIME = 2000;
 constexpr const uint16_t BUTTON_TIME = 100;
 
@@ -43,12 +43,7 @@ int main(int argc, char *argv[])
 {
     volatile bool start = true;
 
-    auto callback = [](int gpio, int level, uint32_t tick)
-    {
-        cout << (gpio == PIN_RED ? "Pin red " : "Pin blue ") << to_string(gpio) << " (" << to_string(level) << ")" << endl;
-    };
-
-    if (gpioInitialise() < 0)
+    if (wiringPiSetup() == -1)
     {
         fprintf(stderr, "pigpio initialisation failed\n");
         return 1;
@@ -56,16 +51,14 @@ int main(int argc, char *argv[])
 
     /* Set GPIO modes */
 
-    //set OUTPUT for pin 22
-    gpioSetMode(PIN_BLUE, PI_OUTPUT);
-    gpioSetAlertFunc(PIN_BLUE, callback);
+    //set OUTPUT for pin 16
+    pinMode(PIN_BLUE, OUTPUT);
 
-    //set OUTPUT for pin 27
-    gpioSetMode(PIN_RED, PI_OUTPUT);
-    gpioSetAlertFunc(PIN_RED, callback);
+    //set OUTPUT for pin 1
+    pinMode(PIN_RED, OUTPUT);
 
-    // set input form pin 2
-    gpioSetMode(PIN_BUTTON, PI_INPUT);
+    // set input form pin 8
+    pinMode(PIN_BUTTON, INPUT);
 
     /* start new thread for retrive button action */
     thread t([&start]()
@@ -75,8 +68,8 @@ int main(int argc, char *argv[])
                  {
                      //check button status if chlicker turn on blue led
                      this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
-                     int buttonValue = !gpioRead(PIN_BUTTON);
-                     gpioWrite(PIN_BLUE, buttonValue);
+                     int buttonValue = digitalRead(PIN_BUTTON);
+                     digitalWrite(PIN_BLUE, buttonValue);
                      if (buttonValue)
                      {
                          count++;
@@ -94,31 +87,30 @@ int main(int argc, char *argv[])
     while (start)
     {
 
-        gpioWrite(PIN_RED, 0); //turn off
+        digitalWrite(PIN_RED, LOW); //turn off
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
 
-        gpioWrite(PIN_RED, 1); //turn on
+        digitalWrite(PIN_RED, HIGH); //turn on
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
+
+        cout << digitalRead(PIN_BUTTON) << endl;
     }
 
     //before exit blink led for 4 time
     for (uint8_t i = 0; i < 4; i++)
     {
-        gpioWrite(PIN_RED, 0);
-        gpioWrite(PIN_BLUE, 0);
+        digitalWrite(PIN_RED, LOW);
+        digitalWrite(PIN_BLUE, LOW);
         this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
-        gpioWrite(PIN_RED, 1);
-        gpioWrite(PIN_BLUE, 1);
+        digitalWrite(PIN_RED, HIGH);
+        digitalWrite(PIN_BLUE, HIGH);
         this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
     }
 
-    gpioWrite(PIN_RED, 0);
-    gpioWrite(PIN_BLUE, 0);
-
-    /* Stop DMA, release resources */
-    gpioTerminate();
+    digitalWrite(PIN_RED, LOW);
+    digitalWrite(PIN_BLUE, LOW);
 
     cout << "bye" << endl;
 

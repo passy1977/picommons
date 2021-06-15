@@ -37,21 +37,28 @@ namespace picommons
         class Pin
         {
         protected:
-            uint8_t pin;
+            int pin;
 
-            inline Pin(uint8_t pin) noexcept : pin(pin) {}
+            inline Pin(int pin) noexcept : pin(pin) {}
 
-            inline uint8_t getPin() const noexcept
+            inline int getPin() const noexcept
             {
                 return pin;
             }
         };
 
-        struct FromWiringPi final : public Pin
+        struct WiringPi final : public Pin
         {
             using Pin::getPin;
 
-            FromWiringPi(uint8_t wiringPiPin);
+            WiringPi(int pin);
+        };
+
+        struct GPIO final : public Pin
+        {
+            using Pin::getPin;
+
+            GPIO(int pin);
         };
     }
 }
