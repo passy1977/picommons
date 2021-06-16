@@ -41,6 +41,10 @@ All the examples are combined with the relative Fritzing file containing the wir
   building: g++ -o blinking_led_whit_button blinking_led_whit_button.cpp -lwiringPi -lwiringPiDev -lpthread
 - 02_blinking_led_whit_button  
   building: g++ -o 02_blinking_led_whit_button 02_blinking_led_whit_button.cpp -lwiringPi -lwiringPiDev -lpthread
+- 03_blinking_led_whit_interrupt  
+  building: g++ -o 03_blinking_led_whit_interrupt 03_blinking_led_whit_interrupt.cpp -lwiringPi -lwiringPiDev -lpthread
+- 04_display_1602  
+  building: g++ -o 04_display_1602 04_display_1602.cpp -I../include -L../build -lwiringPi -lwiringPiDev -lpthread -lpicommons
 
 ## Build lib
 
