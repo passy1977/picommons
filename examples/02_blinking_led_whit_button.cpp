@@ -33,11 +33,11 @@ using namespace std;
 
 #include <wiringPi.h>
 
-constexpr const int PIN_RED = 1;
-constexpr const int PIN_BLUE = 16;
-constexpr const int PIN_BUTTON = 0;
-constexpr const uint16_t LED_TIME = 2000;
-constexpr const uint16_t BUTTON_TIME = 100;
+static constexpr const int PIN_RED = 1;
+static constexpr const int PIN_BLUE = 16;
+static constexpr const int PIN_BUTTON = 0;
+static constexpr const uint16_t LED_TIME = 2000;
+static constexpr const uint16_t BUTTON_TIME = 100;
 
 int main(int argc, char *argv[])
 {

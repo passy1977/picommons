@@ -56,6 +56,10 @@ void LCD1602::init(const vector<int> &pins)
                      pins[5], //LCD_07
                      0, 0, 0, 0);
 
+        print("");
+
+    clear();
+
     if (handle == -1)
     {
         throw runtime_error("Init error");

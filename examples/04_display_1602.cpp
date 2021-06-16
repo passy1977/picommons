@@ -23,7 +23,7 @@
 */
 
 /*
- * g++ -o 03_blinking_led_whit_interrupt 03_blinking_led_whit_interrupt.cpp  -lwiringPi -lwiringPiDev -lpthread
+ * g++ -o 04_display_1602 04_display_1602.cpp  -I../include -L../build -lwiringPi -lwiringPiDev -lpthread -lpicommons
  */
 
 #include <iostream>
@@ -33,22 +33,60 @@ using namespace std;
 
 #include <wiringPi.h>
 
+#include <string>
+using std::string;
+
+#include <picommons/display.h>
+using namespace picommons;
+
 //USE WIRINGPI PIN NUMBERS
-#define LCD_RS 25 //Register select pin
-#define LCD_E 24  //Enable Pin
-#define LCD_D4 23 //Data pin 4
-#define LCD_D5 22 //Data pin 5
-#define LCD_D6 21 //Data pin 6
-#define LCD_D7 14 //Data pin 7
+static constexpr const int LCD_RS = 25; //Register select pin
+static constexpr const int LCD_E = 24;  //Enable Pin
+static constexpr const int LCD_D4 = 23; //Data pin 4
+static constexpr const int LCD_D5 = 22; //Data pin 5
+static constexpr const int LCD_D6 = 21; //Data pin 6
+static constexpr const int LCD_D7 = 14; //Data pin 7
+static constexpr const uint8_t TICK = 200;
+
+static constexpr const char msg[] = " Hi I'm Antonio     bye  bye";
 
 int main(int argc, char *argv[])
 {
-
     int lcd;
     wiringPiSetup();
-    lcd = lcdInit(2, 16, 4, LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7, 0, 0, 0, 0);
 
-    lcdPuts(lcd, "Hello, world!");
+    auto &&display = Display::factory(Display::Type::LCD1602, {LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7});
 
-    return 0;
+    for (;;)
+    {
+        display->print("");
+
+        const char *p = &msg[0];
+        while (*p)
+        {
+            display->print(*p);
+            p++;
+
+            this_thread::sleep_for(chrono::milliseconds(TICK));
+        }
+
+        this_thread::sleep_for(chrono::milliseconds(TICK));
+
+        for (int i = 0; i < 4; i++)
+        {
+            display->clear();
+
+            display->print("");
+
+            this_thread::sleep_for(chrono::milliseconds(TICK));
+
+            display->print(msg);
+
+            this_thread::sleep_for(chrono::milliseconds(TICK));
+        }
+
+        display->clear();
+
+        display->print("");
+    }
 }
