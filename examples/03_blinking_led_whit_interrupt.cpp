@@ -22,11 +22,10 @@
     SOFTWARE.
 */
 
-/**
- * g++ -o 01_blinking_led 01_blinking_led.cpp  -lwiringPi -lwiringPiDev -lpthread
+/*
+ * g++ -o 03_blinking_led_whit_interrupt 03_blinking_led_whit_interrupt.cpp  -lwiringPi -lwiringPiDev -lpthread
  */
 
-#include <iostream>
 #include <iostream>
 #include <thread> // std::this_thread::sleep_for
 #include <chrono> // std::chrono::seconds
@@ -36,10 +35,25 @@ using namespace std;
 
 static constexpr const int PIN_RED = 1;
 static constexpr const int PIN_BLUE = 16;
+static constexpr const int PIN_BUTTON = 0;
 static constexpr const uint16_t LED_TIME = 2000;
+static constexpr const uint16_t BUTTON_TIME = 100;
+
+static volatile bool blueStatus = false;
+static volatile bool blueStatusCheck = false;
+
+static auto interruptFunc = []()
+{
+    blueStatus = digitalRead(PIN_BUTTON);
+
+    blueStatusCheck = false;
+
+    digitalWrite(PIN_BLUE, blueStatus);
+};
 
 int main(int argc, char *argv[])
 {
+    volatile bool start = true;
 
     if (wiringPiSetup() == -1)
     {
@@ -47,31 +61,57 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    /* Set WiringPi modes */
-
-    //set OUTPUT for pin 1
-    pinMode(PIN_RED, OUTPUT);
+    /* Set GPIO modes */
 
     //set OUTPUT for pin 16
     pinMode(PIN_BLUE, OUTPUT);
 
-    for (;;)
+    //set OUTPUT for pin 1
+    pinMode(PIN_RED, OUTPUT);
+
+    // set input form pin 8
+    pinMode(PIN_BUTTON, INPUT);
+
+    wiringPiISR(PIN_BUTTON, INT_EDGE_BOTH, interruptFunc);
+
+    while (start)
     {
 
-        digitalWrite(PIN_BLUE, HIGH);
-        digitalWrite(PIN_RED, LOW);
-        cout << "BLUE" << endl;
+        digitalWrite(PIN_RED, LOW); //turn off
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
 
-        digitalWrite(PIN_BLUE, LOW);
-        digitalWrite(PIN_RED, HIGH);
-        cout << "RED" << endl;
+        digitalWrite(PIN_RED, HIGH); //turn on
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
+
+        if (blueStatus)
+        {
+            cout << blueStatus << " - " << blueStatusCheck << endl;
+            if (blueStatusCheck)
+            {
+                start = false;
+            }
+
+            blueStatusCheck = blueStatus;
+        }
     }
 
-    /* Stop DMA, release resources */
+    //before exit blink led for 4 time
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        digitalWrite(PIN_RED, LOW);
+        digitalWrite(PIN_BLUE, LOW);
+        this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
+        digitalWrite(PIN_RED, HIGH);
+        digitalWrite(PIN_BLUE, HIGH);
+        this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
+    }
+
+    digitalWrite(PIN_RED, LOW);
+    digitalWrite(PIN_BLUE, LOW);
+
+    cout << "bye" << endl;
 
     return 0;
 }

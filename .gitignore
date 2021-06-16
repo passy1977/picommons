@@ -1040,3 +1040,4 @@ Mkfile.old
 dkms.conf
 examples/02_blinking_led_whit_button
 examples/01_blinking_led
+examples/03_blinking_led_whit_interrupt
