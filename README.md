@@ -91,7 +91,7 @@ To cross-compile for your own Raspberry Pi, which may have some custom libraries
   
 Create a folder $HOME/raspberrypi. In your raspberrypi folder, make a folder called rootfs.
   
-Now you need to copy the entire /liband /usr directory to this newly created folder. I usually bring the rpi image up and copy it via rsync:
+Now you need to copy the entire /lib and /usr directory to this newly created folder. I usually bring the rpi image up and copy it via rsync:
 ```
 rsync -vR --progress -rl --delete-after --safe-links pi@192.168.1.PI:/{lib,usr,opt/vc/lib} $HOME/raspberrypi/rootfs
 ```
