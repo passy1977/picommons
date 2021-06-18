@@ -58,20 +58,20 @@ int main(int argc, char *argv[])
     for (;;)
     {
 
+        //turn off red led then turn on blue one
         digitalWrite(PIN_BLUE, HIGH);
         digitalWrite(PIN_RED, LOW);
         cout << "BLUE" << endl;
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
 
+        //turn off blue led then turn on red one
         digitalWrite(PIN_BLUE, LOW);
         digitalWrite(PIN_RED, HIGH);
         cout << "RED" << endl;
 
         this_thread::sleep_for(chrono::milliseconds(LED_TIME));
     }
-
-    /* Stop DMA, release resources */
-
+    
     return 0;
 }
