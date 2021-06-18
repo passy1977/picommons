@@ -34,6 +34,7 @@ using namespace std;
 
 #include <wiringPi.h>
 
+//set WiringPi pin number
 static constexpr const int PIN_RED = 1;
 static constexpr const int PIN_BLUE = 16;
 static constexpr const uint16_t LED_TIME = 2000;
