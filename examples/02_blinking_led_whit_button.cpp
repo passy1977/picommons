@@ -33,6 +33,7 @@ using namespace std;
 
 #include <wiringPi.h>
 
+//set WiringPi pin number
 static constexpr const int PIN_RED = 1;
 static constexpr const int PIN_BLUE = 16;
 static constexpr const int PIN_BUTTON = 0;
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
     //set OUTPUT for pin 1
     pinMode(PIN_RED, OUTPUT);
 
-    // set input form pin 8
+    // set input form pin 0
     pinMode(PIN_BUTTON, INPUT);
 
     /* start new thread for retrive button action */
@@ -66,9 +67,13 @@ int main(int argc, char *argv[])
                  uint8_t count = 0;
                  while (start)
                  {
-                     //check button status if chlicker turn on blue led
+                     
                      this_thread::sleep_for(chrono::milliseconds(BUTTON_TIME));
+                     
+                     //check button status if chlicker turn on blue led
                      int buttonValue = digitalRead(PIN_BUTTON);
+                     
+                     //set blue kled status
                      digitalWrite(PIN_BLUE, buttonValue);
                      if (buttonValue)
                      {
