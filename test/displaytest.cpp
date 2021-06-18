@@ -16,8 +16,4 @@ class DisplayTest : public ::testing::Test
 TEST_F(DisplayTest, BasicAssertions)
 {
   EXPECT_TRUE(Display::factory(Display::Type::LCD1602, vector<int>{1, 2, 3, 4, 5, 6}));
-
-  GPIO g = 2;
-
-  EXPECT_EQ(g.getPin(), 8);
 }

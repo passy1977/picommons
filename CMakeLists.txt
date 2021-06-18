@@ -24,15 +24,18 @@ add_library(picommons
         include/picommons/lcd1602.h
         include/picommons/constants.h
         include/picommons/pinhelper.h
+        include/picommons/convenience.h
         src/lcd1602.cpp
         src/display.cpp
         src/constants.cpp
         src/pinhelper.cpp
+        src/convenience.cpp
 )
 
 add_executable(picommonsTest
         test/displaytest.cpp
         test/pinhelpertest.cpp
+        test/conveniencetest.cpp
 )
 
 
