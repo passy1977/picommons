@@ -56,15 +56,15 @@ make
 ```
 
 ## How to cross compile on Linux (Ubuntu 20.10)
-form [https://stackoverflow.com/questions/19162072/how-to-install-the-raspberry-pi-cross-compiler-on-my-linux-host-machine#1](https://stackoverflow.com/questions/19162072/how-to-install-the-raspberry-pi-cross-compiler-on-my-linux-host-machine). 
+form [https://stackoverflow.com/questions/19162072/how-to-install-the-raspberry-pi-cross-compiler-on-my-linux-host-machine](https://stackoverflow.com/questions/19162072/how-to-install-the-raspberry-pi-cross-compiler-on-my-linux-host-machine). 
+(Thank to [Stefan Profanter](https://stackoverflow.com/users/869402/stefan-profanter))  
   
 This tutorial is based on @Stenyg answer. In addition to many other solutions in the internet, this tutorial also supports older Rasperry Pi (A, B, B+, Zero) based on the ARMv6 CPU. See also: GCC 8 Cross Compiler outputs ARMv7 executable instead of ARMv6. 
 
-### Set up the toolchain
+### Set up the toolchain 
 There is no official git repository containing an updated toolchain (See [https://github.com/raspberrypi/tools/issues/102](https://github.com/raspberrypi/tools/issues/102)).
   
 I created a new github repository which includes building and precompiled toolchains for ARMv6 based on GCC8 and newer:  
-  
 [https://github.com/Pro/raspi-toolchain](https://github.com/Pro/raspi-toolchain)
   
 As mentioned in the project's readme, these are the steps to get the toolchain. You can also build it yourself (see the README for further details). 
@@ -110,3 +110,6 @@ export RASPBERRY_VERSION=1
 cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/raspberry/Toolchain-rpi.cmake ..
 ```
 An example hello world is shown here: [https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh](https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh)
+
+
+
