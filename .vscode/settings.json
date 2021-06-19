@@ -24,6 +24,7 @@
         "bitset": "cpp",
         "chrono": "cpp",
         "__threading_support": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "thread": "cpp"
     }
 }
