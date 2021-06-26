@@ -128,7 +128,7 @@ Now you should be able to compile your cmake programs simply by adding this extr
 export RASPBIAN_ROOTFS=$HOME/raspberrypi/rootfs
 export PATH=/opt/cross-pi-gcc/bin:$PATH
 export RASPBERRY_VERSION=1
-cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/raspi-toolchain/Toolchain-rpi.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/raspi-toolchain/toolchain-rpi.cmake ..
 ```
 
 An example hello world is shown here: [https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh](https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh)
