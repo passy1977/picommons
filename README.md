@@ -118,17 +118,16 @@ To tell CMake to take your own toolchain, you need to have a toolchain file whic
 
 Get this toolchain file from here: [https://github.com/Pro/raspi-toolchain/blob/master/Toolchain-rpi.cmake](https://github.com/Pro/raspi-toolchain/blob/master/Toolchain-rpi.cmake).
 
-```
-wget --output-document toolchain-rpi.cmake  https://github.com/Pro/raspi-toolchain/blob/master/Toolchain-rpi.cmake
-```
-
 Now you should be able to compile your cmake programs simply by adding this extra flag: -D CMAKE_TOOLCHAIN_FILE=$HOME/raspberrypi/Toolchain-rpi.cmake. and setting the correct environment variables:
 
 ```
 export RASPBIAN_ROOTFS=$HOME/raspberrypi/rootfs
 export PATH=/opt/cross-pi-gcc/bin:$PATH
 export RASPBERRY_VERSION=1
-cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/raspi-toolchain/toolchain-rpi.cmake ..
+mkdir build
+cd build
+cmake -DCROSS_COMPILE=ON -DCMAKE_TOOLCHAIN_FILE=$HOME/raspberrypi/toolchain-rpi.cmake ..
+make
 ```
 
 An example hello world is shown here: [https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh](https://github.com/Pro/raspi-toolchain/blob/master/build_hello_world.sh)

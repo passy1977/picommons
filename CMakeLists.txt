@@ -5,6 +5,7 @@ PROJECT(picommons VERSION "0.1.0" LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_EXTENSIONS ON)
+set(RASPBIAN_ROOTFS $ENV{RASPBIAN_ROOTFS})
 
 include(FetchContent)
 FetchContent_Declare(
@@ -16,6 +17,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+if(CROSS_COMPILE)
+  if(${RASPBIAN_ROOTFS})
+    message( FATAL " Env RASPBIAN_ROOTFS not set" )
+  endif()
+
+  include_directories("${RASPBIAN_ROOTFS}/usr/local/include")
+  link_directories("${RASPBIAN_ROOTFS}/usr/local/lib")
+endif(CROSS_COMPILE)
 
 include_directories(include)
 
